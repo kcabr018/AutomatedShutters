@@ -1,0 +1,14 @@
+TemperatureSensor.cpp
+	- collectSingleReading:		validate setup -> collect single reading -> convert to usable reading
+	- collectAvgReading:		validate setup -> collect 20 readings -> return the total divided by 20
+
+inputs.cpp
+	- gatherReadings:
+	- checkTime:
+	- checkShutterState:
+
+main.ino
+	- gather sensor data
+	- look at results to see what the next state should be
+		- if next state is close the shutters, then check to see if it's currently closed
+		- if next state is open the shutters, verify the time of day as well as whether it's currently closed

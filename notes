@@ -1,0 +1,34 @@
+XBEE
+	- can't handle 5V input. Need to bring this down to 3.3V
+	- explorer does this for us
+
+Shutter state when starting the program
+	- should allow for either the shutters to be open or closed when first setting up the system
+	- for now, it can assume the shutters are closed
+
+main.ino
+	- need to buy RPi to send the Arduino messages with a time
+		- can send a new sync message to the Arduino every day/week/month
+		- uses the Time library which is already imported in the Arduino IDE
+			- can look at the first character of the incoming Arduino messages to see what type of message it is. 't' is for epoch time update
+		
+
+TODO
+- parse serial input to the Arduino and perform the correct function based on the message type
+- come up with a protocol for sending data 
+	- can be 'p0<1 digit int for power state>' for power on/off messages
+		- source device will be 00 for RPi
+		- destination device will be any one of the arduino modules
+		- power state will be 1 to turn on or 0 for off
+	- 'p1<1 digit int for the state>' for autoTurnOn messages
+	- 't0<10 digit int>' for sync messages
+	- 't1<2 digit int>' for setting hourON; ex t108
+	- 't2<2digit int>' for setting hourOFF; ex t219
+- need to see if the XBee allows sending data only to a single host instead of broadcasting
+	- this could cause issues if everyone broadcasts repeatedly
+	- the while(Serial.available()) could run continuously
+- work on the code to send the sensor data out through the serial connection
+
+// Debugging statement
+Serial.print(""); //TESTER
+Serial.println(); //TESTER
