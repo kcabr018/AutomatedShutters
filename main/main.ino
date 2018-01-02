@@ -5,7 +5,7 @@
 #include "TemperatureSensor.h"
 
 // Single character message tags
-#define TIME_HEADER		't' // Header tag for time-related messages (sync, hourOn/hourOff changing)
+#define TIME_HEADER	't' // Header tag for time-related messages (sync, hourOn/hourOff changing)
 #define POWER_HEADER	'p' // Header tag for system power actions
 #define FORMAT_HEADER	'f' // Header tag for setting the date format message (long/short) 
 #define MAX_MSG_LENGTH	12  // The maximum allowable chars in a single transmission
@@ -29,7 +29,7 @@ void setup()
 {
 	Serial.begin(9600);
 	temperature.setup(0);
-	/*light.setup(1);*/	// To be incorporated later
+	/*light.setup(1);*/
 	isDaytime = true;
 	poweredOn = true;
 	autoTurnOn = true;

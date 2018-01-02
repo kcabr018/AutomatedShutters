@@ -10,7 +10,8 @@ main.ino
 	- need to buy RPi to send the Arduino messages with a time
 		- can send a new sync message to the Arduino every day/week/month
 		- uses the Time library which is already imported in the Arduino IDE
-			- can look at the first character of the incoming Arduino messages to see what type of message it is. 't' is for epoch time update
+			- can look at the first character of the incoming Arduino messages to see 
+			what type of message it is. 't' is for epoch time update
 		
 
 TODO
@@ -27,6 +28,9 @@ TODO
 - need to see if the XBee allows sending data only to a single host instead of broadcasting
 	- this could cause issues if everyone broadcasts repeatedly
 	- the while(Serial.available()) could run continuously
+	- xbees allow sending data to a single destination host
+		- each shutter module can have their destination address be the RPi's xbee address while
+ 		the RPi xbee can change depending on which module it needs to send data to
 - work on the code to send the sensor data out through the serial connection
 
 // Debugging statement
