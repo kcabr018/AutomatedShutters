@@ -13,13 +13,16 @@
 
 const int deviceId = 1; // This device's ID
 bool isDaytime;
-bool poweredOn; // the power state of the system
-bool autoTurnOn; // whether the system should resume operation in the morning time after having been manually shut off
-double tempReading; // a variable to store the temp readings obtained from the TemperatureSensor class
-double lightReading; // a variable to store the light readings obtained from the LightSensor class
+bool poweredOn;		// the power state of the system
+bool autoTurnOn;	// whether the system should resume operation in the morning time after having 
+			// been manually shut off
+double tempReading; 	// a variable to store the temp readings obtained from the TemperatureSensor
+			// class
+double lightReading; 	// a variable to store the light readings obtained from the LightSensor class
 double mediumTemp = 87; // the average temperature to compare input temp readings against
-int hourOff, hourOn; // the hours in which the system should be turned on and off. Use 24hr format
-int currentHour, currentMinute; // The hour and minutes of the current time. Used to compare against the off and on times. 
+int hourOff, hourOn; 	// the hours in which the system should be turned on and off. Use 24hr format
+int currentHour, currentMinute; // The hour and minutes of the current time. Used to compare against
+				// the off and on times. 
 char serialInput[MAX_MSG_LENGTH];
 TemperatureSensor temperature;
 LightSensor light;
@@ -145,21 +148,11 @@ void processMessage()
 	Serial.println(serialInput);
 }
 
-/*****
-* A power message is composed of 6 bytes:
-* - <Byte 0: message type; byte 1-2: source ID; byte 3-4: destination ID; byte 5: 0/1 for power off/on respectively> 
-* - 'p <2 byte source ID> <2 byte dest ID> <1 bit power state>'
-* - ex. p00011
-*	- byte 0:	signifies that this message is a power message
-*	- byte 1-2:	the source device that sent this message has an ID of 00 (RPi)
-*	- byte 3-4:	the destination device that will perform this message's action is 01
-*	- byte 5:	turn the arduino module on
-*****/
 void processPowerMessage()
 {
-	readInput(2, 1);
+	readInput(2, 1); // Read the remaining bytes of the message
 
-	if (serialInput[1] == '0')
+	if (serialInput[1] == '0') // '0' is for turning the power on/off
 	{
 		Serial.println("Running the poweredOn case"); //TESTER
 		int newPowerState = convertCharToInt('0', serialInput[2]);
@@ -174,7 +167,7 @@ void processPowerMessage()
 		Serial.print("PoweredOn is now: ");
 		Serial.println(poweredOn);
 	}
-	else if (serialInput[1] == '1')
+	else if (serialInput[1] == '1') // '1' is for enabling/disabling autoTurnOn
 	{
 		Serial.println("The autoTurnOn case is running"); //TESTER
 		int newAutoTurnOn = convertCharToInt('0', serialInput[2]);
