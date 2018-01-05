@@ -61,8 +61,10 @@ CONFIGURATIONS
 
 Xbee Config and Info
 	- Communication using Xbee requires that all devices attempting to communicate be on the same
-		Personal Area Network (PAN)
+		Personal Area Network (PAN). For this project we will use AE31.
  	- Each device will have its own 16 bit address
+		- RPI address:		0x0000_4400;	RPI destination:	0x0000_4401(Module 1)
+		- Module 1 address:	0x0000_4401;	Module 1 dest:		0x0000_4400(RPi)
 	- Xbee allows for broadcasting data to all hosts in the PAN or sending it to a single host
 	- In this system, there will be a default PAN for all hosts
 	- A starting address will begin with the RPi Xbee and increment for each of the remaining modules
@@ -71,6 +73,25 @@ Xbee Config and Info
 			and power messages
 		* Arduino modules will not broadcast data on the PAN
 		* Arduino modules will specify the RPi address as the destination of their transmission 
+	- XBee supply voltage can only be between 2.1-3.6V
+		* need a logic level converter to convert the voltage supply and serial input from the 
+			Arduino
+		* The XBee explorer serves as a llc
+	- The XBee explorer is like a post office. If a person (Arduino) has a letter to send out
+		or transmit, then it must send that letter to the post office. The post office will 
+		receive that letter as input and then get ready to send it out to its destination. In
+		this example, the DIN pin of the XBee explorer must be for receiving data from the
+		Arduino. The DOUT pin of the XBee explorer will not be for sending out data wirelessly 
+		since if this was the case, then there would be no need for a cable to connect to this
+		pin. The DOUT pin is for sending data that has wirelessly arrived to the XBee and
+		sending it to the Arduino destination. 
+	- Connect the 5V pin on the XBee explorer to the 5V pin on the Arduino
+	- Connect the DOUT pin on the XBee explorer to the Rx pin on the Arduino
+		* Data transmitted out of the wired DOUT of the XBee explorer will be for the Arduino to
+			receive 
+	- Connect the DIN pin on the XBee explorer to the Tx pin on the Arduino
+		* Data transmitted out of the Arduino will be going into the XBee explorer so that it may
+		be sent out wirelessly
 
 RPi data transmission
 	- The RPi will need to change the destination address setting dynamically using command mode (AT
@@ -81,3 +102,9 @@ RPi data transmission
 		3. Enter 'ATWR' to save these changes
 		4. Enter 'ATCN' to exit command mode
 		* the system should now be able to transmit to the new destination address
+
+	- The RPi will send the above message types to the various modules
+		- to allow the RPi to communicate using the serial port, we must first install 
+			python-serial (sudo apt-get install python-serial)
+		- create a script with the '.py' extension
+		- run the script: ex. 'python script.py'

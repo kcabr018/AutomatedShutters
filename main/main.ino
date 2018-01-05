@@ -50,7 +50,7 @@ void loop()
 		Serial.print("Current minute: "); //TESTER
 		Serial.println(currentMinute); //TESTER
 
-		char input = Serial.read();
+		char input = (char)Serial.read();
 		serialInput[0] = input;
 		processMessage(); // call the function to process the serial input
 	}
@@ -59,59 +59,64 @@ void loop()
 		//digitalClockDisplay();
 	}
 
-	//	// Set the power of the system based on whether it's day or night
-	//	if (currentHour == hourOn && currentMinute == 0 && !poweredOn && autoTurnOn)
-	//	{
-	//		poweredOn = true;
-	//		isDaytime = true;
-	//	}
-	//
-	//	/**********************************************
-	//	* Check input queue for messages from the RPi * 
-	//	***********************************************/
-	//	// messages can contain:
-	//	//	- commands to power on/off the  system
-	//	//	- the current location and time
-	//	//	- any updates to the hourOff or hourOn settings
-	// 
-	//	if (poweredOn) 
-	//	{
-	//		/***********************
-	//		* Collect the readings *
-	//		************************/
-	//		tempReading = temperature.collectAvgReading();
-	//		/*lightReading = light.collectAvgReading();*/	// To be incorporated later
-	//
-	//		/*********************************************
-	//		* Change the state of the shutters if needed *
-	//		**********************************************/
-	//		if (tempReading < mediumTemp && isDaytime) // if it's cold and daytime, open the shutters
-	//		{
-	//			motor.openShutters();
-	//		}
-	//		else // every other instance should try to close the shutters
-	//		{
-	//			motor.closeShutters();
-	//		}
-	//
-	//		/****************************************************************
-	//		* Send data to centralized database, to be stored and displayed *
-	//		*****************************************************************/
-	//		// Can send to a file on a RPi or other system and then periodically move all this data to a sql db
-	//		// Can create a website to display this information
-	//
-	//
-	//		/*******************************************************
-	//		* Turn off the system when currentHour reaches hourOff * 
-	//		********************************************************/
-	//		if (currentHour == hourOff && currentMinute == 0)
-	//		{
-	//			poweredOn = false;
-	//			isDaytime = false;
-	//		}
-	//	}
+	// Set the power of the system based on whether it's day or night
+	if (currentHour == hourOn && currentMinute == 0 && !poweredOn && autoTurnOn)
+	{
+		poweredOn = true;
+		isDaytime = true;
+	}
 
-	delay(3000); // wait 1 minute before repeating
+	/**********************************************
+	* Check input queue for messages from the RPi * 
+	***********************************************/
+	// messages can contain:
+	//	- commands to power on/off the  system
+	//	- the current location and time
+	//	- any updates to the hourOff or hourOn settings
+	if (poweredOn) 
+	{
+		/***********************
+		* Collect the readings *
+		************************/
+		tempReading = temperature.collectAvgReading();
+		Serial.print("Temperature Reading: ");
+		Serial.println(tempReading);
+
+		/*lightReading = light.collectAvgReading();*/	// To be incorporated later
+
+		/*********************************************
+		* Change the state of the shutters if needed *
+		**********************************************/
+		if (tempReading < mediumTemp && isDaytime) // if it's cold and daytime, open 
+								// the shutters
+		{
+			motor.openShutters();
+		}
+		else // every other instance should try to close the shutters
+		{
+			motor.closeShutters();
+		}
+
+		/****************************************************************
+		* Send data to centralized database, to be stored and displayed *
+		*****************************************************************/
+		// Can send to a file on a RPi or other system and then periodically move all 
+		// this data to a sql db
+		// Can create a website to display this information
+
+
+		/*******************************************************
+		* Turn off the system when currentHour reaches hourOff * 
+		********************************************************/
+		if (currentHour == hourOff && currentMinute == 0)
+		{
+			poweredOn = false;
+			isDaytime = false;
+		}
+	}
+
+	resetValues();
+	delay(10000); // wait 1 minute before repeating
 }
 
 void digitalClockDisplay()
@@ -162,14 +167,11 @@ void processPowerMessage()
 		else if (newPowerState == 0)
 			poweredOn = false;
 
-		Serial.print("newPowerState: "); //TESTER
-		Serial.println(newPowerState); //TESTER
-		Serial.print("PoweredOn is now: ");
-		Serial.println(poweredOn);
+		Serial.print("Changing the power state to be: ");
+		Serial.println(newPowerState);
 	}
 	else if (serialInput[1] == '1') // '1' is for enabling/disabling autoTurnOn
 	{
-		Serial.println("The autoTurnOn case is running"); //TESTER
 		int newAutoTurnOn = convertCharToInt('0', serialInput[2]);
 		autoTurnOn = newAutoTurnOn;
 
@@ -217,8 +219,6 @@ void processHourChange(char type)
 	{
 		readInput(2, 2);
 		hourOn = convertCharToInt(serialInput[2], serialInput[3]);
-		Serial.print(serialInput[2]); //TESTER
-		Serial.println(serialInput[3]); //TESTER
 		Serial.print("New hourOn: "); //TESTER
 		Serial.println(hourOn); //TESTER
 	}
@@ -226,14 +226,12 @@ void processHourChange(char type)
 	{
 		readInput(2, 2);
 		hourOff = convertCharToInt(serialInput[2], serialInput[3]);
-		Serial.print(serialInput[2]); //TESTER
-		Serial.println(serialInput[3]); //TESTER
 		Serial.print("New hourOff: "); //TESTER
 		Serial.println(hourOff); //TESTER
 	}
 }
 
-// Reads the next 'size' bytes of serial input and stores it in the global variable 'serailInput'
+// Reads the next 'size' bytes of serial input and stores it in the global variable 'serialInput'
 String readInput(int size, int startingIndex)
 {
 	for (int i = startingIndex; i < startingIndex + size; i++)
@@ -270,19 +268,11 @@ void processSyncMessage()
 	pctime = Serial.parseInt();
 	if (pctime >= DEFAULT_TIME) // check the integer is a valid time (greater than Jan 1 2013)
 	{
-		Serial.print("The PC time is: "); //TESTER
-		Serial.println(pctime);
 		setTime(pctime); // Sync Arduino clock to the time received on the serial port
 	}
 
 	currentHour = hour();
 	currentMinute = minute();
-
-	Serial.print("Current hour: "); //TESTER
-	Serial.println(currentHour);
-	Serial.print("Current minute: "); //TESTER
-	Serial.println(currentMinute);
-
 }
 
 time_t requestSync()
@@ -291,7 +281,7 @@ time_t requestSync()
 	return 0; // the time will be sent later in response to serial mesg
 }
 
-// Clears the values of certain variables for each loop instance
+// Clears the serialInput array
 void resetValues()
 {
 	for (int i = 0; i < MAX_MSG_LENGTH; i++)

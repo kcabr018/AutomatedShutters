@@ -22,7 +22,6 @@ double TemperatureSensor::collectSingleReading()
 {
 	singleReading = analogRead(tempPin);
 	singleReading = convertReadingToUsable(singleReading);
-	ValidationHelper::printMessage("Got a single reading of: " + String(singleReading, 2)); // Tester
 	return singleReading;
 }
 
@@ -34,7 +33,6 @@ double TemperatureSensor::collectAvgReading()
 	{
 		avgReading += collectSingleReading();
 	}
-	ValidationHelper::printMessage("Got an average reading of: " + String(avgReading/20, 2)); // Tester
 	return avgReading / 20;
 }
 

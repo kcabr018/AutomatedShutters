@@ -3,19 +3,22 @@ XBEE
 	- explorer does this for us
 
 Shutter state when starting the program
-	- should allow for either the shutters to be open or closed when first setting up the system
+	- should allow for either the shutters to be open or closed when first 
+		setting up the system
 	- for now, it can assume the shutters are closed
 
 main.ino
 	- need to buy RPi to send the Arduino messages with a time
 		- can send a new sync message to the Arduino every day/week/month
 		- uses the Time library which is already imported in the Arduino IDE
-			- can look at the first character of the incoming Arduino messages to see 
+			- can look at the first character of the incoming Arduino messages 
+				to see 
 			what type of message it is. 't' is for epoch time update
 		
 
 TODO
-- parse serial input to the Arduino and perform the correct function based on the message type
+- parse serial input to the Arduino and perform the correct function based on 
+	the message type
 - come up with a protocol for sending data 
 	- can be 'p0<1 digit int for power state>' for power on/off messages
 		- source device will be 00 for RPi
@@ -25,13 +28,20 @@ TODO
 	- 't0<10 digit int>' for sync messages
 	- 't1<2 digit int>' for setting hourON; ex t108
 	- 't2<2digit int>' for setting hourOFF; ex t219
-- need to see if the XBee allows sending data only to a single host instead of broadcasting
+- need to see if the XBee allows sending data only to a single host instead of 
+	broadcasting
 	- this could cause issues if everyone broadcasts repeatedly
 	- the while(Serial.available()) could run continuously
 	- xbees allow sending data to a single destination host
-		- each shutter module can have their destination address be the RPi's xbee address while
- 		the RPi xbee can change depending on which module it needs to send data to
+		- each shutter module can have their destination address be the RPi's 
+			xbee address while the RPi xbee can change depending on which 
+			module it needs to send data to
 - work on the code to send the sensor data out through the serial connection
+- check on why the RPi is receiving the data it puts out
+	- this is causing the console log to show 2 of every char ex. 'hheelloo'
+- make all messages include the 0d(enter) character
+	- once the primary message is done, before the sleep, make sure to clean
+		up the input array
 
 // Debugging statement
 Serial.print(""); //TESTER
