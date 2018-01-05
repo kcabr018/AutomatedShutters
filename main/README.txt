@@ -71,6 +71,25 @@ Xbee Config and Info
 			and power messages
 		* Arduino modules will not broadcast data on the PAN
 		* Arduino modules will specify the RPi address as the destination of their transmission 
+	- XBee supply voltage can only be between 2.1-3.6V
+		* need a logic level converter to convert the voltage supply and serial input from the 
+			Arduino
+		* The XBee explorer serves as a llc
+	- The XBee explorer is like a post office. If a person (Arduino) has a letter to send out
+		or transmit, then it must send that letter to the post office. The post office will 
+		receive that letter as input and then get ready to send it out to its destination. In
+		this example, the DIN pin of the XBee explorer must be for receiving data from the
+		Arduino. The DOUT pin of the XBee explorer will not be for sending out data wirelessly 
+		since if this was the case, then there would be no need for a cable to connect to this
+		pin. The DOUT pin is for sending data that has wirelessly arrived to the XBee and
+		sending it to the Arduino destination. 
+	- Connect the 5V pin on the XBee explorer to the 5V pin on the Arduino
+	- Connect the DOUT pin on the XBee explorer to the Rx pin on the Arduino
+		* Data transmitted out of the wired DOUT of the XBee explorer will be for the Arduino to
+			receive 
+	- Connect the DIN pin on the XBee explorer to the Tx pin on the Arduino
+		* Data transmitted out of the Arduino will be going into the XBee explorer so that it may
+		be sent out wirelessly
 
 RPi data transmission
 	- The RPi will need to change the destination address setting dynamically using command mode (AT

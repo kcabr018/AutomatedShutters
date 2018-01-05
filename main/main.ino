@@ -111,7 +111,7 @@ void loop()
 	//		}
 	//	}
 
-	delay(3000); // wait 1 minute before repeating
+	delay(10000); // wait 1 minute before repeating
 }
 
 void digitalClockDisplay()
@@ -162,14 +162,11 @@ void processPowerMessage()
 		else if (newPowerState == 0)
 			poweredOn = false;
 
-		Serial.print("newPowerState: "); //TESTER
-		Serial.println(newPowerState); //TESTER
-		Serial.print("PoweredOn is now: ");
-		Serial.println(poweredOn);
+		Serial.print("Changing the power state to be: ");
+		Serial.println(newPowerState);
 	}
 	else if (serialInput[1] == '1') // '1' is for enabling/disabling autoTurnOn
 	{
-		Serial.println("The autoTurnOn case is running"); //TESTER
 		int newAutoTurnOn = convertCharToInt('0', serialInput[2]);
 		autoTurnOn = newAutoTurnOn;
 
@@ -217,8 +214,6 @@ void processHourChange(char type)
 	{
 		readInput(2, 2);
 		hourOn = convertCharToInt(serialInput[2], serialInput[3]);
-		Serial.print(serialInput[2]); //TESTER
-		Serial.println(serialInput[3]); //TESTER
 		Serial.print("New hourOn: "); //TESTER
 		Serial.println(hourOn); //TESTER
 	}
@@ -226,8 +221,6 @@ void processHourChange(char type)
 	{
 		readInput(2, 2);
 		hourOff = convertCharToInt(serialInput[2], serialInput[3]);
-		Serial.print(serialInput[2]); //TESTER
-		Serial.println(serialInput[3]); //TESTER
 		Serial.print("New hourOff: "); //TESTER
 		Serial.println(hourOff); //TESTER
 	}
@@ -277,12 +270,6 @@ void processSyncMessage()
 
 	currentHour = hour();
 	currentMinute = minute();
-
-	Serial.print("Current hour: "); //TESTER
-	Serial.println(currentHour);
-	Serial.print("Current minute: "); //TESTER
-	Serial.println(currentMinute);
-
 }
 
 time_t requestSync()
