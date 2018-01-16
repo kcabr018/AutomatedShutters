@@ -59,6 +59,7 @@ void loop()
 		//digitalClockDisplay();
 	}
 
+<<<<<<< HEAD
 	// Set the power of the system based on whether it's day or night
 	if (currentHour == hourOn && currentMinute == 0 && !poweredOn && autoTurnOn)
 	{
@@ -116,6 +117,60 @@ void loop()
 	}
 
 	resetValues();
+=======
+	//	// Set the power of the system based on whether it's day or night
+	//	if (currentHour == hourOn && currentMinute == 0 && !poweredOn && autoTurnOn)
+	//	{
+	//		poweredOn = true;
+	//		isDaytime = true;
+	//	}
+	//
+	//	/**********************************************
+	//	* Check input queue for messages from the RPi * 
+	//	***********************************************/
+	//	// messages can contain:
+	//	//	- commands to power on/off the  system
+	//	//	- the current location and time
+	//	//	- any updates to the hourOff or hourOn settings
+	// 
+	//	if (poweredOn) 
+	//	{
+	//		/***********************
+	//		* Collect the readings *
+	//		************************/
+	//		tempReading = temperature.collectAvgReading();
+	//		/*lightReading = light.collectAvgReading();*/	// To be incorporated later
+	//
+	//		/*********************************************
+	//		* Change the state of the shutters if needed *
+	//		**********************************************/
+	//		if (tempReading < mediumTemp && isDaytime) // if it's cold and daytime, open the shutters
+	//		{
+	//			motor.openShutters();
+	//		}
+	//		else // every other instance should try to close the shutters
+	//		{
+	//			motor.closeShutters();
+	//		}
+	//
+	//		/****************************************************************
+	//		* Send data to centralized database, to be stored and displayed *
+	//		*****************************************************************/
+	//		// Can send to a file on a RPi or other system and then periodically move all this data to a sql db
+	//		// Can create a website to display this information
+	//
+	//
+	//		/*******************************************************
+	//		* Turn off the system when currentHour reaches hourOff * 
+	//		********************************************************/
+	//		if (currentHour == hourOff && currentMinute == 0)
+	//		{
+	//			poweredOn = false;
+	//			isDaytime = false;
+	//		}
+	//	}
+
+>>>>>>> e022ca76d01863dfd4149faa973d98846f04a3a3
 	delay(10000); // wait 1 minute before repeating
 }
 
