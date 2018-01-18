@@ -20,10 +20,10 @@ double lightReading; // a variable to store the light readings obtained from the
 double mediumTemp = 87; // the average temperature to compare input temp readings against
 int hourOff, hourOn; // the hours in which the system should be turned on and off. Use 24hr format
 int currentHour, currentMinute; // The hour and minutes of the current time. Used to compare against the off and on times. 
-char serialInput[MAX_MSG_LENGTH];
 TemperatureSensor temperature;
 LightSensor light;
 Motor motor;
+char serialInput[MAX_MSG_LENGTH];
 
 void setup()
 {
@@ -58,10 +58,7 @@ void loop()
 
 	//	// Set the power of the system based on whether it's day or night
 	//	if (currentHour == hourOn && currentMinute == 0 && !poweredOn && autoTurnOn)
-	//	{
 	//		poweredOn = true;
-	//		isDaytime = true;
-	//	}
 	//
 	//	/**********************************************
 	//	* Check input queue for messages from the RPi * 
@@ -104,7 +101,6 @@ void loop()
 	//		if (currentHour == hourOff && currentMinute == 0)
 	//		{
 	//			poweredOn = false;
-	//			isDaytime = false;
 	//		}
 	//	}
 
