@@ -42,7 +42,9 @@ TODO
 - make all messages include the 0d(enter) character
 	- once the primary message is done, before the sleep, make sure to clean
 		up the input array
-
+- should check why the analogRead voltage is incorrect
+	- It could be that powering the Arduino via USB is noisy
+	- should try powering up the Arduino with external power
 // Debugging statement
 Serial.print(""); //TESTER
 Serial.println(); //TESTER
