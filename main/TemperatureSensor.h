@@ -15,11 +15,11 @@ public:
 private:
 	// Attributes
 	int tempPin = -1; // the pin to be used for the temperature sensor
-	double singleReading;
+	int singleReading;
 	double avgReading;
 	ValidationHelper validationHelper;
 	// Functions
-	double convertReadingToUsable(double reading);
+	double convertReadingToUsable(int reading);
 };
 
 #endif

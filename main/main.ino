@@ -10,6 +10,7 @@
 #define FORMAT_HEADER	'f' // Header tag for setting the date format message (long/short) 
 #define MAX_MSG_LENGTH	12  // The maximum allowable chars in a single transmission
 #define TIME_REQUEST	65
+#define MODULE_ID 		1
 
 const int deviceId = 1; // This device's ID
 bool isDaytime;
@@ -43,6 +44,7 @@ void setup()
 void loop()
 {
 	resetValues();
+
 	while (Serial.available())
 	{
 		Serial.print("Current hour: "); //TESTER
@@ -79,7 +81,8 @@ void loop()
 		* Collect the readings *
 		************************/
 		tempReading = temperature.collectAvgReading();
-		Serial.print("Temperature Reading: ");
+		//Serial.print("Temperature Reading: ");
+		Serial.print(MODULE_ID);
 		Serial.println(tempReading);
 
 		/*lightReading = light.collectAvgReading();*/	// To be incorporated later
